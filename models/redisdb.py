@@ -51,7 +51,7 @@ def ensure_redis_connection():
 
 
 def link_add(email, link, str_link, expiration_days=30):
-    ensure_redis_connection()
+    # ensure_redis_connection()
     try:
         # 使用哈希结构保存链接信息
         redis_client.hset('links', str_link, link)
@@ -68,7 +68,7 @@ def link_add(email, link, str_link, expiration_days=30):
 
 
 def link_get(short_link):
-    ensure_redis_connection()
+    # ensure_redis_connection()
     try:
         # 使用 hget 从哈希表 'links' 中获取原始链接
         jump_link = redis_client.hget('links', short_link)
