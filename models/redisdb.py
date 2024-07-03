@@ -42,7 +42,12 @@ def ensure_redis_connection():
     except (redis.exceptions.ConnectionError, redis.exceptions.TimeoutError):
         # 如果连接异常或超时，重新建立连接
         logger.info('Redis 连接丢失，正在重新连接...')
-        redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+        redis_client = redis.StrictRedis(
+            host=config['redis']['host'],
+            port=config['redis']['port'],
+            password=config['redis']['password'],
+            db=config['redis']['db']
+        )
 
 
 def link_add(email, link, str_link, expiration_days=30):
