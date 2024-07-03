@@ -1,0 +1,12 @@
+
+server:
+    host: 0.0.0.0
+    port: 5001
+    threading: True
+    debug: False
+
+redis:
+    host: 127.0.0.1
+    port: 6379
+    password: Dingtalk124561017
+    db: 0

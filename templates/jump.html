@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳转页面</title>
+    <!-- 跳转代码 -->
+    <meta http-equiv="refresh" content="3; url={{ original_link }}">
+    <style>
+        /* 页面居中对齐 */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff8c00, #ff0080);
+            color: #fff;
+        }
+        /* 容器样式 */
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        /* 标题样式 */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        /* 提示信息样式 */
+        p {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>页面即将跳转</h1>
+        <p>3秒后将跳转到目标页面...   {{ original_link }}</p>
+    </div>
+</body>
+</html>
