@@ -30,7 +30,6 @@ pip install -r requirements.txt
 server:  # 服务器配置
     host: 0.0.0.0  # 服务器地址
     port: 5001  # 端口
-    threading: True  # 是否开启多线程
     debug: False  # 是否开启debug模式
 
 redis:  # redis配置
