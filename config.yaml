@@ -5,7 +5,7 @@ server:
     debug: False
 
 redis:
-    host: 127.0.0.1
+    host: 192.168.1.5
     port: 6379
     password: Dingtalk124561017
     db: 0
