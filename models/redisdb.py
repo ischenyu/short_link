@@ -7,7 +7,7 @@ from datetime import timedelta
 
 # 加载 YAML 配置文件
 try:
-    with open('config.yaml', 'r') as file:
+    with open('./config.yaml', 'r') as file:
         config = yaml.safe_load(file)
 except FileNotFoundError:
     logger.error("配置文件未找到")
@@ -51,7 +51,7 @@ def ensure_redis_connection():
 
 
 def link_add(email, link, str_link, expiration_days=30):
-    # ensure_redis_connection()
+    ensure_redis_connection()
     try:
         # 使用哈希结构保存链接信息
         redis_client.hset('links', str_link, link)

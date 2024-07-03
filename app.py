@@ -20,6 +20,7 @@ except yaml.YAMLError as exc:
     logger.error(f"YAML 解析错误: {exc}")
     config = None
 
+
 def create_secure_str(length):
     letters = string.ascii_letters + string.digits
     secure_str = ''.join(secrets.choice(letters) for _ in range(length))
@@ -33,18 +34,15 @@ def index():
 
 @app.route('/<short_link>', methods=['GET'])
 def get_link(short_link):
-    if short_link == 'favicon.ico':
-        pass
-    else:
-        try:
-            original_link = redisdb.link_get(short_link)
-            if original_link:
-                return render_template('jump.html', original_link=original_link)
-            else:
-                return render_template('404.html'), 404
-        except Exception as e:
-            logger.error(f'服务器错误：{e}')
-            return render_template('error.html', e=e)
+    try:
+        original_link = redisdb.link_get(short_link)
+        if original_link:
+            return render_template('jump.html', original_link=original_link)
+        else:
+            return render_template('404.html'), 404
+    except Exception as e:
+        logger.error(f'服务器错误：{e}')
+        return render_template('error.html', e=e)
 
 
 @app.route('/api/user/new', methods=['POST'])
@@ -57,7 +55,7 @@ def add_link():
             link = data['original_url']
             str_link = create_secure_str(6)
             if redisdb.link_add(email, link, str_link):
-                return jsonify({'code': 200, 'shortened_url': 'https://s.alistnas.top/'+str_link})
+                return jsonify({'code': 200, 'shortened_url': 'https://s.alistnas.top/' + str_link})
             else:
                 return jsonify({'code': 500, 'message': ''})
         else:
@@ -74,4 +72,3 @@ if __name__ == '__main__':
         host=config['server']['host'],
         port=config['server']['port']
     )
-
