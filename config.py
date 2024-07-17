@@ -16,8 +16,8 @@ class Config:
     # Email configuration
     SMTP_HOST = 'smtp.163.com'
     SMTP_PORT = 465
-    SMTP_USER = 'abb1234aabb@163.com'
-    SMTP_PASSWORD = 'ENWHVUCJXFARZRBA'
+    SMTP_USER = 'YOUR EMAIL'
+    SMTP_PASSWORD = 'YOUR PASSWORD'
     SMTP_SENDER = 'paimon@alistnas.top'
 
     # Admin configuration
