@@ -1,29 +1,18 @@
 import sys
 
-import yaml
 import redis
 from loguru import logger
 from datetime import timedelta
+from config import Config
 
-# 加载 YAML 配置文件
-try:
-    with open('./config.yaml', 'r') as file:
-        config = yaml.safe_load(file)
-except FileNotFoundError:
-    logger.error("配置文件未找到")
-    config = None
-except yaml.YAMLError as exc:
-    logger.error(f"YAML 解析错误: {exc}")
-    config = None
-
-if config:
+if Config:
     try:
         # 使用配置文件中的参数创建 Redis 客户端
         redis_client = redis.StrictRedis(
-            host=config['redis']['host'],
-            port=config['redis']['port'],
-            password=config['redis']['password'],
-            db=config['redis']['db']
+            host=Config.REDIS_HOST,
+            port=Config.REDIS_PORT,
+            password=Config.REDIS_PASSWORD,
+            db=Config.REDIS_DB,
         )
         logger.info("Redis 连接成功")
     except Exception as e:
@@ -43,10 +32,10 @@ def ensure_redis_connection():
         # 如果连接异常或超时，重新建立连接
         logger.info('Redis 连接丢失，正在重新连接...')
         redis_client = redis.StrictRedis(
-            host=config['redis']['host'],
-            port=config['redis']['port'],
-            password=config['redis']['password'],
-            db=config['redis']['db']
+            host=Config['REDIS_HOST'],
+            port=Config['REDIS_PORT'],
+            password=Config['REDIS_PASSWORD'],
+            db=Config['REDIS_DB'],
         )
 
 
