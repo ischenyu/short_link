@@ -2,6 +2,8 @@
 
 <p1>基于flask和redis的短链接生成器</p1>
 
+** 此分支是dev 分支，请勿用于正式环境 **
+
 ## 预览
 <img src="https://img.alistnas.top/file/55f390daa9fe9fdf160cf.png"></img>
 

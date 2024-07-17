@@ -1,74 +1,26 @@
-import secrets
-import string
 
-import yaml
-from flask import Flask, render_template, request, jsonify
+# 导入 Flask 类，用于创建 Web 服务器
+from flask import Flask
+# 导入 logger 对象，用于记录日志
 from loguru import logger
+from config import Config
+# 导入 URL 路由规则
+from models.urls import urls
+from models.admin_url import admin_urls
 
-from models import redisdb
 
 app = Flask(__name__)
-
-# 加载 YAML 配置文件
-try:
-    with open('config.yaml', 'r') as file:
-        config = yaml.safe_load(file)
-except FileNotFoundError:
-    logger.error("配置文件未找到")
-    config = None
-except yaml.YAMLError as exc:
-    logger.error(f"YAML 解析错误: {exc}")
-    config = None
+app.config.from_object(Config)
+app.register_blueprint(urls)
+app.register_blueprint(admin_urls)
+app.secret_key = app.config["SECRET_KEY"]
 
 
-def create_secure_str(length):
-    letters = string.ascii_letters + string.digits
-    secure_str = ''.join(secrets.choice(letters) for _ in range(length))
-    return secure_str
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-
-@app.route('/<short_link>', methods=['GET'])
-def get_link(short_link):
-    try:
-        original_link = redisdb.link_get(short_link)
-        if original_link:
-            return render_template('jump.html', original_link=original_link)
-        else:
-            return render_template('404.html'), 404
-    except Exception as e:
-        logger.error(f'服务器错误：{e}')
-        return render_template('error.html', e=e)
-
-
-@app.route('/api/user/new', methods=['POST'])
-def add_link():
-    try:
-        data = request.get_json()
-        logger.info(data)
-        if data:
-            email = data['email']
-            link = data['original_url']
-            str_link = create_secure_str(6)
-            if redisdb.link_add(email, link, str_link):
-                return jsonify({'code': 200, 'shortened_url': 'https://s.alistnas.top/' + str_link})
-            else:
-                return jsonify({'code': 500, 'message': ''})
-        else:
-            logger.error('data is None')
-            return jsonify({'code': 500})
-    except Exception as e:
-        logger.error(e)
-        return jsonify({'code': 500, 'message': 'Server error'})
-
-
+# 如果当前脚本作为主程序运行，则启动 Flask 应用程序
 if __name__ == '__main__':
+    # 启动 Flask 应用程序，参数来自配置文件
     app.run(
-        debug=config['server']['debug'],
-        host=config['server']['host'],
-        port=config['server']['port']
+        debug=app.config['DEBUG'],
+        host=app.config['SERVER_HOST'],
+        port=app.config['SERVER_PORT']
     )
