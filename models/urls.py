@@ -8,7 +8,6 @@ from flask import Blueprint, render_template, request, jsonify
 from loguru import logger
 # 导入Redis数据库操作模块
 from models import redisdb
-import app
 from config import Config
 
 
