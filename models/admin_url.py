@@ -14,7 +14,7 @@ def admin_login():
         if session.get('email'):
             return redirect(url_for('urls.admin_index'))
         else:
-            return render_template('admin/login.html')
+            return render_template('admin/login.html', title='管理员登录')
     elif request.method == 'POST':
         data = request.form
         if data['email'] == Config.ADMIN_EMAIL and data['password'] == Config.ADMIN_PASSWORD:

@@ -7,12 +7,14 @@ from config import Config
 # 导入 URL 路由规则
 from models.urls import urls
 from models.admin_url import admin_urls
+from models.user_url import user_urls
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.register_blueprint(urls)
 app.register_blueprint(admin_urls)
+app.register_blueprint(user_urls)
 app.secret_key = app.config["SECRET_KEY"]
 
 
