@@ -2,6 +2,7 @@
 import secrets
 # 导入string模块，提供各种字符串常量
 import string
+import redis
 # 导入Flask相关模块，用于构建Web应用
 from flask import Blueprint, render_template, request, jsonify
 # 导入loguru模块，用于日志记录
@@ -45,8 +46,8 @@ def get_link(short_link):
             return render_template('jump.html', original_link=original_link)
         else:
             return render_template('404.html'), 404
-    except Exception as e:
-        logger.error(f'服务器错误：{e}')
+    except redis.exceptions.RedisError as e:
+        logger.error('发生Redis错误', exc_info=True)
         return render_template('error.html', e=e)
 
 

@@ -2,21 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-import yaml
-from loguru import logger
-
-# 加载 YAML 配置文件
-try:
-    with open('./config.yaml', 'r') as file:
-        config = yaml.safe_load(file)
-        smtp_host = config['email']['smtp_host']
-        smtp_port = config['email']['smtp_port']
-except FileNotFoundError:
-    logger.error("配置文件未找到")
-    config = None
-except yaml.YAMLError as exc:
-    logger.error(f"YAML 解析错误: {exc}")
-    config = None
+from config import Config
 
 
 def send_email(subject, message, to_emails):
@@ -29,8 +15,8 @@ def send_email(subject, message, to_emails):
     """
 
     # 邮件发送者信息
-    from_email = config['email']['from_email']
-    password = str(['email']['smtp_password'])
+    from_email = Config.SMTP_SENDER
+    password = Config.ADMIN_PASSWORD
 
     # 创建一个MIMEMultipart对象并设置邮件头信息
     msg = MIMEMultipart()
@@ -42,7 +28,7 @@ def send_email(subject, message, to_emails):
     msg.attach(MIMEText(message, 'plain'))
 
     # 连接到SMTP服务器并发送邮件
-    server = smtplib.SMTP(smtp_host, smtp_port)
+    server = smtplib.SMTP(Config.SMTP_HOST, Config.SMTP_PORT)
     server.starttls()
     server.login(from_email, password)
     text = msg.as_string()
