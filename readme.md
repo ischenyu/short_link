@@ -27,19 +27,8 @@ cd short_link
 pip install -r requirements.txt
 ```
 ### 3.编辑配置文件
-配置文件位于项目目录下的config.yaml中
-```yaml
-server:  # 服务器配置
-    host: 0.0.0.0  # 服务器地址
-    port: 5001  # 端口
-    debug: False  # 是否开启debug模式
+配置文件位于项目目录下的config.py中
 
-redis:  # redis配置
-    host: 127.0.0.1  # redis地址
-    port: 6379  # redis端口
-    password: Dingtalk124561017  # redis密码
-    db: 0  # redis数据库
-```
 
 ### 4.启动服务
 ```bash

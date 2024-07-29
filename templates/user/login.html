@@ -21,7 +21,7 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Login</h4>
-							<form method="POST" class="my-login-validation" novalidate="">
+							<form method="POST" class="user_login" novalidate="">
 								<div class="form-group">
 									<label for="email">邮箱地址</label>
 									<input id="email" type="email" class="form-control" name="email" value="" required autofocus>
@@ -45,17 +45,6 @@
 										<label for="remember" class="custom-control-label">记住我</label>
 									</div>
 								</div>
-
-                                {% with messages = get_flashed_messages() %}
-                                {% if messages %}
-                                    {% for message in messages %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ message }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                                {% endwith %}
-
 								<div class="form-group m-0">
 									<button type="submit" class="btn btn-primary btn-block">
 										登录
@@ -75,8 +64,8 @@
     </section>
 
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.serializeJSON/3.2.1/jquery.serializejson.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 	<script src="/static/js/user/login.js"></script>
-    <script src="/static/js/admin/login.js"></script>
 </body>
 </html>

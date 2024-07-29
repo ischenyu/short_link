@@ -1,7 +1,9 @@
+from contextlib import contextmanager
+from datetime import timedelta
+
 import redis
 from loguru import logger
-from datetime import timedelta
-from contextlib import contextmanager
+
 from config import Config
 
 
@@ -60,3 +62,35 @@ def link_get(short_link):
     except Exception as e:
         logger.error(f'获取链接失败：{e}')
         return None
+
+
+def user_code(user_email, code, expiration_time=600):
+    try:
+        with redis_connection() as redis_client:
+            with redis_client.pipeline() as pipe:
+                # 使用哈希结构保存验证码信息
+                pipe.hset('codes', user_email, code)
+                # 设置验证码的过期时间
+                pipe.expire('codes', expiration_time)
+                pipe.execute()
+            logger.info(f'{user_email} 添加验证码 {code} 成功')
+            return True
+    except Exception as e:
+        logger.error(f'添加验证码失败：{e}')
+
+
+def user_get_code(user_email):
+    try:
+        with redis_connection() as redis_client:
+            with redis_client.pipeline() as pipe:
+                # 使用 hget 从哈希表 'codes' 中获取验证码
+                pipe.hget('codes', user_email)
+                code = pipe.execute()
+            if code:
+                code = code[0].decode('utf-8')  # 将字节数据解码为字符串
+                logger.info(f'获取验证码 {code} 成功')
+                return code
+    except Exception as e:
+        logger.error(f'获取验证码失败：{e}')
+        return None
+

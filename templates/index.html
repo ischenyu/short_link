@@ -14,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url("https://img.alistnas.top/file/b2881731049160afecdf6.png") no-repeat center center fixed;
+            background: url("http://img.alistnas.top/i/2024/07/22/lyx9mk.jpeg") no-repeat center center fixed;
             background-size: cover;
         }
         h1 {
@@ -55,6 +55,8 @@
                     <label for="original_url">输入要缩短的链接</label>
                     <input type="url" class="form-control" id="original_url" name="original_url" placeholder="URL" required>
                 </div>
+                <!-- 在提交按钮上方添加reCAPTCHA小部件 -->
+                <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary">提交</button>
                 </div>
@@ -74,29 +76,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery.serializeJSON/3.2.1/jquery.serializejson.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#addform').on('submit', function(event) {
-                event.preventDefault(); // 阻止表单默认提交
-
-                // 使用 serializeJSON 将表单数据序列化为 JSON
-                const data = $(this).serializeJSON();
-
-                // 发送数据到后端
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/user/new', // 替换为你的后端URL
-                    data: JSON.stringify(data),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        $('#response-message').html(`<div class="alert alert-success" style="color: #000000">短链接生成成功: ${response.shortened_url}</div>`);
-                    },
-                    error: function(error) {
-                        $('#response-message').html(`<div class="alert alert-danger" style="color: #000000">提交失败`);
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="/static/js/index.js"></script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js" async defer></script>
 </body>
 </html>

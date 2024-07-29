@@ -1,11 +1,10 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import resend
+import config
 
-from config import Config
+resend.api_key = config.Config.SMTP_PASSWORD
 
 
-def send_email(subject, message, to_emails):
+def send_email(subject, code, to_emails):
     """
     发送邮件的函数。
 
@@ -14,23 +13,11 @@ def send_email(subject, message, to_emails):
     :param to_emails: 收件人列表
     """
 
-    # 邮件发送者信息
-    from_email = Config.SMTP_SENDER
-    password = Config.ADMIN_PASSWORD
-
-    # 创建一个MIMEMultipart对象并设置邮件头信息
-    msg = MIMEMultipart()
-    msg['From'] = from_email
-    msg['To'] = ", ".join(to_emails)
-    msg['Subject'] = subject
-
-    # 将邮件正文添加到MIMEText对象中，并将其作为MIMEMultipart对象的一部分
-    msg.attach(MIMEText(message, 'plain'))
-
-    # 连接到SMTP服务器并发送邮件
-    server = smtplib.SMTP(Config.SMTP_HOST, Config.SMTP_PORT)
-    server.starttls()
-    server.login(from_email, password)
-    text = msg.as_string()
-    server.sendmail(from_email, to_emails, text)
-    server.quit()
+    params: resend.Emails.SendParams = {
+        "from": "Paimon <paimon@alistnas.top>",
+        "to": to_emails,
+        "subject": subject,
+        "html": "<h2>验证码</h2></br><p>你的验证码是：</p><strong style='width: 100%;'>"+ code + "</strong></br><p>，十分钟内有效，请勿将验证码泄露给其他人。</p>",
+    }
+    r = resend.Emails.send(params)
+    print(r)
